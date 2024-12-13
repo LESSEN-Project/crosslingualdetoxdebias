@@ -36,11 +36,11 @@ This repository makes use of the RTP-LX dataset which should be downloaded to ev
   ```
   python bias_eval.py -model Meta-Llama-3.1-8B-Instruct -dataset crowspairs
   ```
-- `bilingual_sent_sim.py` contains the code to compute bilingual sentence similarity between English and non-English sentences from the StereoSet and RTP-LX benchmarks.
+- `bilingual_sent_sim.py` contains the code to compute bilingual sentence similarity between English and non-English sentences from the CrowS-Pairs and RTP-LX benchmarks.
 
   Example usage:
   ```
-  python bilingual_sent_sim.py -model Meta-Llama-3.1-8B-Instruct -dataset stereoset
+  python bilingual_sent_sim.py -model Meta-Llama-3.1-8B-Instruct -dataset crowspairs
   ```
 - `compute_metrics.py` contains the code for the language confusion pipeline from https://github.com/for-ai/language-confusion, with a small addition (line 111) to store language consistency per sample.
 - `generation_eval.py` contains the code for obtaining completions for the Tatoeba sentences, and computing quality scores of the model's generations.
