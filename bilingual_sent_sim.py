@@ -187,55 +187,6 @@ if __name__ == "__main__":
     else:
         results = {}
     # Load corresponding evaluation dataset
-    if args.dataset == "stereoset":
-        batch_size = 4
-        en_text = pd.read_pickle(
-            f"../stereotypes-multi/create_dataset/data/intrasentence/df_intrasentence_en.pkl"
-        )
-        # obtain all English samples
-        en_text = pd.concat(
-            [
-                en_text[en_text["c1_gold_label"] == "stereotype"][
-                    "c1_sentence"
-                ],
-                en_text[en_text["c2_gold_label"] == "stereotype"][
-                    "c2_sentence"
-                ],
-                en_text[en_text["c3_gold_label"] == "stereotype"][
-                    "c3_sentence"
-                ],
-            ]
-        ).tolist()
-        for language in ["de", "es", "fr", "tr", "kr"]:
-            if language in results:
-                continue
-            # obtain all samples in other language
-            cn_text = pd.read_pickle(
-                f"../stereotypes-multi/create_dataset/data/intrasentence/df_intrasentence_{language}{'_v2_0' if language == 'de' else ''}.pkl"
-            )
-            cn_text = pd.concat(
-                [
-                    cn_text[cn_text["c1_gold_label"] == "stereotype"][
-                        "c1_sentence"
-                    ],
-                    cn_text[cn_text["c2_gold_label"] == "stereotype"][
-                        "c2_sentence"
-                    ],
-                    cn_text[cn_text["c3_gold_label"] == "stereotype"][
-                        "c3_sentence"
-                    ],
-                ]
-            ).tolist()
-            # compute and save retrieval accuracy / sentence similarity
-            retrieval_acc = get_retrieval_acc(en_text, cn_text, batch_size)
-            results[language] = retrieval_acc
-            print(language, "Retrieval acc:", retrieval_acc)
-            with open(
-                f"bilingual_sent_retrieval/{args.dataset}_{args.model.split('/')[-1]}_results.pkl",
-                "wb",
-            ) as outfile:
-                pickle.dump(results, outfile)
-
     if args.dataset == "crowspairs":
         batch_size = 4
         for input_file_name in [
