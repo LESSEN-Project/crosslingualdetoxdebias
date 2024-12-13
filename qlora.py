@@ -81,7 +81,7 @@ if __name__ == "__main__":
         choices=[
             "panda",
             "biasdpo",
-            "toxicdpo",
+            "detoxdpo",
             "jigsaw",
         ],
         default="",
@@ -192,14 +192,14 @@ if __name__ == "__main__":
         model = model.merge_and_unload()
         model.save_pretrained(f"{args.model}_lora_{args.dataset}_model")
     # DPO training
-    elif args.dataset in ["biasdpo", "toxicdpo"]:
+    elif args.dataset in ["biasdpo", "detoxdpo"]:
         if args.dataset == "biasdpo":
             dataset = load_dataset("ahmedallam/BiasDPO")[
                 "train"
             ].train_test_split(test_size=0.05, seed=args.seed)
             num_epochs = 20
             n_steps = 25
-        elif args.dataset == "toxicdpo":
+        elif args.dataset == "detoxdpo":
             dataset = pd.concat(
                 [
                     pd.read_json(
