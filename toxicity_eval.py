@@ -80,14 +80,14 @@ if __name__ == "__main__":
     if all(
         [
             os.path.isfile(
-                f"/scratch/vneplen/debiasing-mbbq/toxicity/{args.model.split('/')[-1]}_{l}_{args.dataset}_final_scores.pkl"
+                f"toxicity/{args.model.split('/')[-1]}_{l}_{args.dataset}_final_scores.pkl"
             )
             for l in languages
         ]
     ) and all(
         [
             os.path.isfile(
-                f"/scratch/vneplen/debiasing-mbbq/toxicity/{args.model.split('/')[-1]}_{l}_{args.dataset}_lang.pkl"
+                f"toxicity/{args.model.split('/')[-1]}_{l}_{args.dataset}_lang.pkl"
             )
             for l in languages
         ]
