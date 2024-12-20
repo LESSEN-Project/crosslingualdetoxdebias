@@ -1,5 +1,5 @@
 # Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation
-This is the repository for the Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation paper.
+This is the repository for [Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation](https://arxiv.org/abs/2412.14050).
 
 Authors: Vera Neplenbroek, Arianna Bisazza, Raquel Fernández.
 
