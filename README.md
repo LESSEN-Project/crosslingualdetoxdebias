@@ -74,3 +74,17 @@ This repository makes use of the RTP-LX dataset which should be downloaded to ev
   python toxicity_eval.py -model Meta-Llama-3.1-8B-Instruct -key <PERSPECTIVE_API_KEY>
   ```
 - `visualize_results.ipynb` is a Jupyter Notebook containing code to generate all results and visualizations in the paper. Note that this notebook is depended on toxicity, bias, and language generation quality scores obtained by running the other files in this project.
+
+## Citation
+If you use the code in this repository, please cite the following paper:
+```
+@misc{neplenbroek2024crosslingualtransferdebiasingdetoxification,
+      title={Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation}, 
+      author={Vera Neplenbroek and Arianna Bisazza and Raquel Fernández},
+      year={2024},
+      eprint={2412.14050},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2412.14050}, 
+}
+```
