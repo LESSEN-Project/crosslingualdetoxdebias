@@ -54,6 +54,25 @@ def tokenize_jigsaw(element):
     return {"input_ids": input_batch}
 
 
+def tokenize_sft(element):
+    text = [
+        element["prompt"][i] + " " + element["chosen"][i]
+        for i in range(len(element["prompt"]))
+    ]
+    outputs = tokenizer(
+        text,
+        truncation=True,
+        max_length=context_length,
+        padding="max_length",
+        return_overflowing_tokens=True,
+        return_length=True,
+    )
+    input_batch = []
+    for input_ids in outputs["input_ids"]:
+        input_batch.append(input_ids)
+    return {"input_ids": input_batch}
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -218,7 +237,7 @@ if __name__ == "__main__":
             num_epochs = 1
             n_steps = 100
             dataset = Dataset.from_pandas(dataset).train_test_split(
-                test_size=0.05, seed=42
+                test_size=0.05, seed=args.seed
             )
         training_args = TrainingArguments(
             output_dir=f"{args.model}_lora_{args.dataset}",
@@ -257,6 +276,79 @@ if __name__ == "__main__":
             eval_dataset=dataset["test"],
             tokenizer=tokenizer,
             callbacks=[EarlyStoppingCallback(early_stopping_patience=10)],
+        )
+        print("START TRAINING")
+        trainer.train()
+        model = trainer.model.merge_and_unload()
+        model.save_pretrained(f"{args.model}_lora_{args.dataset}_model")
+    # SFT training on DPO data
+    elif args.dataset in ["biassft", "detoxsft"]:
+        if args.dataset == "biassft":
+            dataset = load_dataset("ahmedallam/BiasDPO")[
+                "train"
+            ].train_test_split(test_size=0.05, seed=args.seed)
+            num_epochs = 20
+            n_steps = 25
+        elif args.dataset == "detoxsft":
+            dataset = pd.concat(
+                [
+                    pd.read_json(
+                        f"toxicity_pairwise/split_{i}.jsonl", lines=True
+                    )[["prompt_text", "unpert_gen_text", "pert_gen_text"]]
+                    for i in range(6)
+                ],
+                ignore_index=True,
+            ).rename(
+                columns={
+                    "prompt_text": "prompt",
+                    "unpert_gen_text": "chosen",
+                    "pert_gen_text": "rejected",
+                }
+            )
+            num_epochs = 1
+            n_steps = 100
+            dataset = Dataset.from_pandas(dataset).train_test_split(
+                test_size=0.05, seed=args.seed
+            )
+
+        context_length = 512
+        tokenized_datasets = dataset.map(
+            tokenize_sft,
+            batched=True,
+            remove_columns=dataset["train"].column_names,
+        )
+        data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
+        print("DATA LOADED")
+        training_args = TrainingArguments(
+            output_dir=f"{args.model}_lora_{args.dataset}",
+            num_train_epochs=num_epochs,
+            save_total_limit=5,
+            eval_strategy="steps",
+            per_device_train_batch_size=4,
+            per_device_eval_batch_size=4,
+            warmup_steps=n_steps,
+            weight_decay=0.001,
+            metric_for_best_model="eval_loss",
+            fp16=True,
+            remove_unused_columns=False,
+            logging_steps=500,
+            eval_steps=500,
+            save_steps=500,
+            save_strategy="steps",
+            learning_rate=3e-4,
+            gradient_checkpointing=True,
+            gradient_checkpointing_kwargs={"use_reentrant": True},
+            load_best_model_at_end=True,
+            seed=args.seed,
+        )
+        model = get_peft_model(model, peft_config)
+        trainer = Trainer(
+            model=model,
+            tokenizer=tokenizer,
+            args=training_args,
+            train_dataset=tokenized_datasets["train"],
+            eval_dataset=tokenized_datasets["test"],
+            data_collator=data_collator,
         )
         print("START TRAINING")
         trainer.train()
