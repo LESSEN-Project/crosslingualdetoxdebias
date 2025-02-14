@@ -29,6 +29,9 @@ This repository also imports code from a number of other repositories, which sho
 This repository makes use of the RTP-LX dataset which should be downloaded to evaluate model toxicity:
 - https://github.com/microsoft/RTP-LX
 
+This repository depends on the Language Model Evaluation Harness to obtain Global-MMLU results:
+- https://github.com/EleutherAI/lm-evaluation-harness
+
 ## Using this repository
 - `bias_eval.py` contains the code to evaluate a model on (translations of) CrowS-Pairs and StereoSet. Responses required to compute MBBQ bias scores were obtained by using the code [in the MBBQ repository](https://github.com/Veranep/MBBQ).
 
@@ -73,7 +76,7 @@ This repository makes use of the RTP-LX dataset which should be downloaded to ev
   ```
   python toxicity_eval.py -model Meta-Llama-3.1-8B-Instruct -key <PERSPECTIVE_API_KEY>
   ```
-- `visualize_results.ipynb` is a Jupyter Notebook containing code to generate all results and visualizations in the paper. Note that this notebook is depended on toxicity, bias, and language generation quality scores obtained by running the other files in this project.
+- `visualize_results.ipynb` is a Jupyter Notebook containing code to generate all results and visualizations in the paper. Note that this notebook is depended on toxicity, bias, question-answering and language generation quality scores obtained by running the other files in this project or its requirements.
 
 ## Citation
 If you use the code in this repository, please cite the following paper:
