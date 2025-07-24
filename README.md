@@ -1,5 +1,5 @@
 # Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation
-This is the repository for [Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation](https://arxiv.org/abs/2412.14050).
+This is the repository for [Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation](https://aclanthology.org/2025.findings-acl.145/).
 
 Authors: Vera Neplenbroek, Arianna Bisazza, Raquel Fernández.
 
@@ -81,13 +81,23 @@ This repository depends on the Language Model Evaluation Harness to obtain Globa
 ## Citation
 If you use the code in this repository, please cite the following paper:
 ```
-@misc{neplenbroek2024crosslingualtransferdebiasingdetoxification,
-      title={Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual LLMs: An Extensive Investigation}, 
-      author={Vera Neplenbroek and Arianna Bisazza and Raquel Fernández},
-      year={2024},
-      eprint={2412.14050},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2412.14050}, 
+@inproceedings{neplenbroek-etal-2025-cross,
+    title = "Cross-Lingual Transfer of Debiasing and Detoxification in Multilingual {LLM}s: An Extensive Investigation",
+    author = "Neplenbroek, Vera  and
+      Bisazza, Arianna  and
+      Fern{\'a}ndez, Raquel",
+    editor = "Che, Wanxiang  and
+      Nabende, Joyce  and
+      Shutova, Ekaterina  and
+      Pilehvar, Mohammad Taher",
+    booktitle = "Findings of the Association for Computational Linguistics: ACL 2025",
+    month = jul,
+    year = "2025",
+    address = "Vienna, Austria",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2025.findings-acl.145/",
+    pages = "2805--2830",
+    ISBN = "979-8-89176-256-5",
+    abstract = "Recent generative large language models (LLMs) show remarkable performance in non-English languages, but when prompted in those languages they tend to express higher harmful social biases and toxicity levels. Prior work has shown that finetuning on specialized datasets can mitigate this behavior, and doing so in English can transfer to other languages. In this work, we investigate the impact of different finetuning methods on the model{'}s bias and toxicity, but also on its ability to produce fluent and diverse text. We reduce biases by finetuning on curated non-harmful text, but find only direct preference optimization to be effective for mitigating toxicity. The mitigation caused by applying these methods in English also transfers to non-English languages. We find evidence that the extent to which transfer takes place can be predicted by the amount of data in a given language present in the model{'}s pretraining data. However, this transfer of bias and toxicity mitigation often comes at the expense of decreased language generation ability in non-English languages, highlighting the importance of developing language-specific bias and toxicity mitigation methods."
 }
 ```
